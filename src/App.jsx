@@ -1,22 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar/SearchBar';
 import UserList from './components/UserList/UserList';
 import GlobalStyle from './GlobalStyle.styles';
 import * as s from './App.style';
+import Pagination from './components/Pagination/Pagination';
 
 function App() {
     const [users, setUsers] = useState([]);
-    console.log(users);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
+    const PERSON_PAGE = 15;
+    const MAX_PAGES = 20;
 
     const handleSearch = async (username) => {
-        const response = await fetch(
-            `https://api.github.com/search/users?q=${username}`,
-        );
-        const data = await response.json();
-        setUsers(data.items);
+        setSearchQuery(username);
+        setCurrentPage(1);
     };
 
-    const handleSearchUsers = async (username) => {
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleSearchUser = async (username) => {
         const response = await fetch(
             `https://api.github.com/users/${username}`,
         );
@@ -24,33 +30,45 @@ function App() {
         console.log(data);
     };
 
-    const sortUsersByRepos = (order) => {
-        const sortedUsers = [...users].sort((a, b) => {
-            if (order === 'asc') {
-                return a.public_repos - b.public_repos;
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `https://api.github.com/search/users?q=${searchQuery}&per_page=${PERSON_PAGE}&page=${currentPage}`,
+            );
+            const data = await response.json();
+
+            let totalPageCount = Math.ceil(data.total_count / PERSON_PAGE);
+            if (totalPageCount > MAX_PAGES) {
+                totalPageCount = MAX_PAGES;
             }
-            return b.public_repos - a.public_repos;
-        });
-        setUsers(sortedUsers);
-    };
+
+            setUsers(data.items);
+            setTotalPages(totalPageCount);
+        };
+
+        if (searchQuery) {
+            fetchData();
+        }
+    }, [currentPage, searchQuery]);
 
     return (
         <s.App>
+            <GlobalStyle />
             <s.Container>
-                <GlobalStyle />
                 <h1>Поиск пользователей на GitHub</h1>
                 <SearchBar
                     users={users}
                     onSearch={handleSearch}
-                    handleSearchUsers={handleSearchUsers}
+                    handleSearchUser={handleSearchUser}
                 />
-                <button type="button" onClick={() => sortUsersByRepos('asc')}>
-                    Sort by Repos Asc
-                </button>
-                <button type="button" onClick={() => sortUsersByRepos('desc')}>
-                    Sort by Repos Desc
-                </button>
                 <UserList users={users} />
+                {totalPages !== 1 && (
+                    <Pagination
+                        totalPages={totalPages}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                )}
             </s.Container>
         </s.App>
     );

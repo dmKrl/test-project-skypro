@@ -6,10 +6,12 @@ import * as s from './SortDropdown.style';
 function SortDropdown({ users }) {
     const [showOptions, setShowOptions] = useState(false);
     const [sortOrder, setSortOrder] = useState('');
+
     const handleSortChange = (order) => {
         setSortOrder(order);
         setShowOptions(false);
     };
+    
     const sortedUsers = [...users].sort((a, b) => {
         if (sortOrder === 'asc') {
             return a.followers - b.followers;
@@ -21,21 +23,17 @@ function SortDropdown({ users }) {
     });
     console.log(sortedUsers);
     return (
-        <s.SortDropdown className="sort-dropdown">
-            <s.SortHeader
-                className="sort-header"
-                onClick={() => setShowOptions(!showOptions)}
-            >
-                <span>Sort by:</span>
-                <span>&#x25BE;</span>
+        <s.SortDropdown>
+            <s.SortHeader onClick={() => setShowOptions(!showOptions)}>
+                <span>Сортировать &#8744;</span>
             </s.SortHeader>
             {showOptions && (
                 <s.Options className="options">
                     <div onClick={() => handleSortChange('asc')}>
-                        Followers Asc
+                        По возрастанию репозиториев
                     </div>
                     <div onClick={() => handleSortChange('desc')}>
-                        Followers Desc
+                        По убыванию репозиториев
                     </div>
                 </s.Options>
             )}

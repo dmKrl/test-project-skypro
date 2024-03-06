@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import * as s from './SearchBar.style';
-import { SortDropdown } from '../SortDropdown/SortDropdown.style';
+import SortDropdown from '../SortDropdown/SortDropdown';
 
-function SearchBar({ users, onSearch, handleSearchUsers }) {
+function SearchBar({ users, onSearch, handleSearchUser }) {
     const [username, setUsername] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         onSearch(username);
-        handleSearchUsers(username);
+        handleSearchUser(username);
     };
 
     return (
