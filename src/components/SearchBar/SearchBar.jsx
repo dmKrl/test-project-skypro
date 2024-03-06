@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import * as s from './SearchBar.style';
+import { SortDropdown } from '../SortDropdown/SortDropdown.style';
 
-function SearchBar({ onSearch }) {
+function SearchBar({ users, onSearch, handleSearchUsers }) {
     const [username, setUsername] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         onSearch(username);
+        handleSearchUsers(username);
     };
 
     return (
         <s.SearchForm onSubmit={handleSubmit}>
+            <s.SearchFormButton type="submit">Искать</s.SearchFormButton>
             <s.SearchFormInput
                 type="text"
                 value={username}
@@ -18,7 +21,7 @@ function SearchBar({ onSearch }) {
                 placeholder="Введите логин пользователя"
                 required
             />
-            <s.SearchFormButton type="submit">Искать</s.SearchFormButton>
+            <SortDropdown users={users} />
         </s.SearchForm>
     );
 }

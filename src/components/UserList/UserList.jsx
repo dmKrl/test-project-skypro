@@ -6,7 +6,7 @@ import * as s from './UserList.style';
 function UserList({ users }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [reposQuantity, setReposQuantity] = useState(null);
-    console.log(selectedUser);
+    console.log(users);
 
     const handleReposUser = async (url) => {
         const response = await fetch(url);
@@ -43,6 +43,12 @@ function UserList({ users }) {
                             <p>Логин: {selectedUser.login}</p>
                             <p>Кол-во репозиториев: {reposQuantity}</p>
                             <p>Айди: {selectedUser.id}</p>
+                            <p>
+                                Ссылка на репозиторий:{' '}
+                                <a href={selectedUser.html_url}>
+                                    {selectedUser.html_url}
+                                </a>
+                            </p>
                         </s.SelectedUserQuantity>
                         <s.SelectedUserImg
                             src={selectedUser.avatar_url}

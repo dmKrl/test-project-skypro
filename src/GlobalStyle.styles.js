@@ -27,9 +27,18 @@ box-sizing: border-box;
 }
 a,
 a:visited {
+  color:rgb(214 214 214);
   text-decoration: none;
   font-family: 'StratosSkyeng', sans-serif;
   cursor: pointer;
+  transition: all 0.1s ease;
+  text-decoration: underline;
+}
+a:hover {
+  transition: all 0.4s ease;
+  color: rgba(255, 255, 255, 0.6);  
+  text-decoration: none;
+
 }
 input, button {
   border:none;
