@@ -5,7 +5,7 @@ import GlobalStyle from './GlobalStyle.styles';
 import * as s from './App.style';
 import Pagination from './components/Pagination/Pagination';
 
-const accessToken = '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';
+const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 
 function App() {
     const [users, setUsers] = useState([]);
