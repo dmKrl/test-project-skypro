@@ -35,13 +35,18 @@ export const SearchFormButton = styled.button`
     border-radius: 8px;
     gap: 20px;
     box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.2);
-    background-color: rgba(0, 0, 0, 0.35);
-    color: white;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+    font-family: "Segoe UI";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
     transition: all 0.2s ease;
     :hover {
     transition: all 0.2s ease;
-        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0);
-        background-color: rgba(0, 0, 0, 0.45);
+        box-shadow: 0px 0px 2px 2px rgba(255, 255, 255,  0);
+        background-color: rgba(255, 255, 255, 0.45);
     }
 }
 `;

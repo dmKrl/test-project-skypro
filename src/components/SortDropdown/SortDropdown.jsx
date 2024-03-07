@@ -25,7 +25,12 @@ function SortDropdown({ users, handleChangeUsers }) {
     return (
         <s.SortDropdown>
             <s.SortHeader onClick={() => setShowOptions(!showOptions)}>
-                <span>Сортировать &#8744;</span>
+                <s.SortHeaderText>
+                    Сортировать{' '}
+                    <s.SortTextSpan $isOpen={showOptions}>
+                        &#8744;
+                    </s.SortTextSpan>
+                </s.SortHeaderText>
             </s.SortHeader>
             {showOptions && (
                 <s.Options className="options">

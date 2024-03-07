@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import SearchBar from './components/SearchBar/SearchBar';
 import UserList from './components/UserList/UserList';
 import GlobalStyle from './GlobalStyle.styles';
 import * as s from './App.style';
 import Pagination from './components/Pagination/Pagination';
 
-const accessToken = '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';
+const accessToken = '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';
 
 function App() {
     const [users, setUsers] = useState([]);
@@ -14,6 +13,7 @@ function App() {
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedUser, setSelectedUser] = useState(false);
+    const [isShowingList, setIsShowingList] = useState(false);
 
     const PERSON_PAGE = 15;
     const MAX_PAGES = 20;
@@ -29,10 +29,13 @@ function App() {
     const handleChangeUsers = (someUsers) => {
         setUsers(someUsers);
     };
+    const handleChangeIsShowingList = () => {
+        setIsShowingList(!isShowingList);
+    };
 
     const handleSearchUserRepos = async (usernameForGetRepos) => {
         try {
-            const response = await axios.get(
+            const response = await fetch(
                 `https://api.github.com/users/${usernameForGetRepos}/repos`,
                 {
                     headers: {
@@ -40,14 +43,15 @@ function App() {
                     },
                 },
             );
-            return response.data;
+            const responseData = await response.json();
+            return responseData;
         } catch (error) {
             return null;
         }
     };
 
-    const handleChangeUserArray = (data) => {
-        const newData = data?.items?.map(async (user) => {
+    const handleAddReposForUsers = (data) => {
+        const newData = data?.map(async (user) => {
             const userWithRep = {
                 ...user,
                 public_rep: await handleSearchUserRepos(user.login),
@@ -65,18 +69,19 @@ function App() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(
+            const response = await fetch(
                 `https://api.github.com/search/users?q=${searchQuery}&per_page=${PERSON_PAGE}&page=${currentPage}`,
             );
+            const responseData = await response.json();
 
             let totalPageCount = Math.ceil(
-                response.data.total_count / PERSON_PAGE,
+                responseData.total_count / PERSON_PAGE,
             );
             if (totalPageCount > MAX_PAGES) {
                 totalPageCount = MAX_PAGES;
             }
             setTotalPages(totalPageCount);
-            handleChangeUserArray(response.data);
+            handleAddReposForUsers(responseData.items);
         };
         if (searchQuery) {
             fetchData();
@@ -90,12 +95,14 @@ function App() {
                 <h1>Поиск пользователей на GitHub</h1>
                 <SearchBar
                     users={users}
+                    handleChangeIsShowingList={handleChangeIsShowingList}
                     handleSearchQueryChange={handleSearchQueryChange}
                     handleChangeUsers={handleChangeUsers}
                     handleChangeSelectedUser={handleChangeSelectedUser}
                 />
                 <UserList
                     users={users}
+                    isShowingList={isShowingList}
                     selectedUser={selectedUser}
                     handleChangeSelectedUser={handleChangeSelectedUser}
                 />

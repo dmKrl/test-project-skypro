@@ -8,6 +8,7 @@ function SearchBar(props) {
         handleSearchQueryChange,
         handleChangeUsers,
         handleChangeSelectedUser,
+        handleChangeIsShowingList,
     } = props;
     const [username, setUsername] = useState('');
 
@@ -15,6 +16,7 @@ function SearchBar(props) {
         e.preventDefault();
         handleChangeSelectedUser(false);
         handleSearchQueryChange(username);
+        handleChangeIsShowingList();
     };
 
     return (

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const App = styled.div`
-    max-width: 1580px;
+    max-width: 1280px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -16,9 +16,11 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
+    min-height: 600px;
+    max-height: 100%;
+
     background-color: rgba(0, 0, 0, 0.35);
-    padding: 10px
+    padding: 30px
 }
 `;
 export const MainHeading = styled.h1``;

@@ -15,6 +15,13 @@ export const SortHeader = styled.div`
     position: relative;
     font-size: 16px;
 `;
+export const SortHeaderText = styled.p``;
+export const SortTextSpan = styled.span`
+    display: inline-block;
+    transition: all 0.4s ease;
+    transform: ${(props) =>
+        props.$isOpen ? 'rotateX(0deg)' : 'rotateX(-180deg)'};
+`;
 export const Options = styled.div`
     position: absolute;
     top: 30px;
@@ -27,6 +34,5 @@ export const Options = styled.div`
     }
     div:hover {
         background-color: rgba(0, 0, 0, 0.7);
-
     }
 `;

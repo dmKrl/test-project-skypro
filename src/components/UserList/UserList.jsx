@@ -2,26 +2,36 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import * as s from './UserList.style';
 
-function UserList({ users, selectedUser, handleChangeSelectedUser }) {
+function UserList({
+    users,
+    isShowingList,
+    selectedUser,
+    handleChangeSelectedUser,
+}) {
     const showDetails = (user) => {
         handleChangeSelectedUser(user);
     };
-
     return (
         <s.UserListContainer>
             <s.UserListWrapper>
-                {users?.map((user) => (
-                    <s.UserListItem
-                        key={user.id}
-                        onClick={() => showDetails(user)}
-                    >
-                        <s.UserListItemImg
-                            src={user.avatar_url}
-                            alt={user.login}
-                        />
-                        <p>Логин: {user.login}</p>
-                    </s.UserListItem>
-                ))}
+                {isShowingList && !users.length ? (
+                    <p>Загрузка...</p>
+                ) : (
+                    users?.map((user) => (
+                        <s.UserListItem
+                            key={user.id}
+                            onClick={() => showDetails(user)}
+                        >
+                            <s.UserListItemImg
+                                src={user.avatar_url}
+                                alt={user.login}
+                            />
+                            <p>
+                                Логин: <br /> <span>{user.login}</span>
+                            </p>
+                        </s.UserListItem>
+                    ))
+                )}
             </s.UserListWrapper>
             {selectedUser && (
                 <s.SelectedUserInfo>
