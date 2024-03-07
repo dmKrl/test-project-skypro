@@ -5,7 +5,11 @@ import GlobalStyle from './GlobalStyle.styles';
 import * as s from './App.style';
 import Pagination from './components/Pagination/Pagination';
 
-const accessToken = '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';
+// const accessToken = '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';
+// const accessToken = prompt(
+//     'Введите токен с настроек GitHub для корректной работы приложения',
+// );
+// console.log(accessToken);
 
 function App() {
     const [users, setUsers] = useState([]);
@@ -37,11 +41,6 @@ function App() {
         try {
             const response = await fetch(
                 `https://api.github.com/users/${usernameForGetRepos}/repos`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                },
             );
             const responseData = await response.json();
             return responseData;
