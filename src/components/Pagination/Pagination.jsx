@@ -2,7 +2,6 @@ import * as s from './Pagination.style';
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
     const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-    console.log(currentPage);
 
     return (
         <s.Pagination className="pagination">

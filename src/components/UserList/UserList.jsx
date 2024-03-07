@@ -1,22 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
 import * as s from './UserList.style';
 
-function UserList({ users }) {
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [reposQuantity, setReposQuantity] = useState(null);
-    console.log(users);
-
-    const handleReposUser = async (url) => {
-        const response = await fetch(url);
-        const data = await response.json();
-        setReposQuantity(data.length);
-    };
-
+function UserList({ users, selectedUser, handleChangeSelectedUser }) {
     const showDetails = (user) => {
-        setSelectedUser(user);
-        handleReposUser(user.repos_url);
+        handleChangeSelectedUser(user);
     };
 
     return (
@@ -41,7 +29,10 @@ function UserList({ users }) {
                     <s.SelectedUserDetails>
                         <s.SelectedUserQuantity>
                             <p>Логин: {selectedUser.login}</p>
-                            <p>Кол-во репозиториев: {reposQuantity}</p>
+                            <p>
+                                Кол-во репозиториев:
+                                {selectedUser.public_rep.length}
+                            </p>
                             <p>Айди: {selectedUser.id}</p>
                             <p>
                                 Ссылка на репозиторий:{' '}

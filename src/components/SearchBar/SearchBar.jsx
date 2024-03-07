@@ -2,13 +2,19 @@ import { useState } from 'react';
 import * as s from './SearchBar.style';
 import SortDropdown from '../SortDropdown/SortDropdown';
 
-function SearchBar({ users, onSearch, handleSearchUser }) {
+function SearchBar(props) {
+    const {
+        users,
+        handleSearchQueryChange,
+        handleChangeUsers,
+        handleChangeSelectedUser,
+    } = props;
     const [username, setUsername] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSearch(username);
-        handleSearchUser(username);
+        handleChangeSelectedUser(false);
+        handleSearchQueryChange(username);
     };
 
     return (
@@ -21,7 +27,7 @@ function SearchBar({ users, onSearch, handleSearchUser }) {
                 placeholder="Введите логин пользователя"
                 required
             />
-            <SortDropdown users={users} />
+            <SortDropdown users={users} handleChangeUsers={handleChangeUsers} />
         </s.SearchForm>
     );
 }

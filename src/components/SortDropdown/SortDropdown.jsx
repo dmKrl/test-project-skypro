@@ -3,25 +3,25 @@
 import { useState } from 'react';
 import * as s from './SortDropdown.style';
 
-function SortDropdown({ users }) {
+function SortDropdown({ users, handleChangeUsers }) {
     const [showOptions, setShowOptions] = useState(false);
-    const [sortOrder, setSortOrder] = useState('');
 
-    const handleSortChange = (order) => {
-        setSortOrder(order);
+    const sortByRepositoriesAscending = () => {
         setShowOptions(false);
+        const sortedUsers = [...users].sort(
+            (a, b) => a.public_rep.length - b.public_rep.length,
+        );
+        handleChangeUsers([...sortedUsers]);
     };
-    
-    const sortedUsers = [...users].sort((a, b) => {
-        if (sortOrder === 'asc') {
-            return a.followers - b.followers;
-        }
-        if (sortOrder === 'desc') {
-            return b.followers - a.followers;
-        }
-        return 0;
-    });
-    console.log(sortedUsers);
+
+    const sortByRepositoriesDescending = () => {
+        setShowOptions(false);
+        const sortedUsers = [...users].sort(
+            (a, b) => b.public_rep.length - a.public_rep.length,
+        );
+        handleChangeUsers([...sortedUsers]);
+    };
+
     return (
         <s.SortDropdown>
             <s.SortHeader onClick={() => setShowOptions(!showOptions)}>
@@ -29,10 +29,10 @@ function SortDropdown({ users }) {
             </s.SortHeader>
             {showOptions && (
                 <s.Options className="options">
-                    <div onClick={() => handleSortChange('asc')}>
+                    <div onClick={sortByRepositoriesAscending}>
                         По возрастанию репозиториев
                     </div>
-                    <div onClick={() => handleSortChange('desc')}>
+                    <div onClick={sortByRepositoriesDescending}>
                         По убыванию репозиториев
                     </div>
                 </s.Options>
