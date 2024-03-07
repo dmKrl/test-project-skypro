@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/test-project-skypro/static/js/main.60fcbda9.js",
+    "main.js": "/test-project-skypro/static/js/main.d17cb1aa.js",
     "index.html": "/test-project-skypro/index.html",
-    "main.60fcbda9.js.map": "/test-project-skypro/static/js/main.60fcbda9.js.map"
+    "main.d17cb1aa.js.map": "/test-project-skypro/static/js/main.d17cb1aa.js.map"
   },
   "entrypoints": [
-    "static/js/main.60fcbda9.js"
+    "static/js/main.d17cb1aa.js"
   ]
 }
