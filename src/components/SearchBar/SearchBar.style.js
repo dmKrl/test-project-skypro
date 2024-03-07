@@ -7,6 +7,7 @@ export const SearchForm = styled.form`
     padding: 30px 10px;
     border-radius: 8px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 `;
 export const SearchFormInput = styled.input`
