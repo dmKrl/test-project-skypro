@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const SortDropdown = styled.div`
     position: relative;
@@ -26,13 +26,30 @@ export const Options = styled.div`
     position: absolute;
     top: 30px;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.4);
     border: 1px solid #ccc;
     width: fit-content;
-    div {
-        padding: 8px;
+`;
+export const OptionsSortBlock = css`
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.4);
+    :hover {
+        transition: all 0.2s ease;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: 'black';
     }
-    div:hover {
-        background-color: rgba(0, 0, 0, 0.7);
-    }
+`;
+export const OptionsSortBlockAsc = styled.div`
+    ${OptionsSortBlock}
+    color: ${(props) => (props.$isActiveAsc ? 'black' : 'white')};
+
+    background-color: ${(props) =>
+        props.$isActiveAsc ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.8)'};
+`;
+export const OptionsSortBlockDesc = styled.div`
+    ${OptionsSortBlock}
+    color: ${(props) => (props.$isActiveDesc ? 'black' : 'white')};
+
+    background-color: ${(props) =>
+        props.$isActiveDesc ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.8)'};
 `;

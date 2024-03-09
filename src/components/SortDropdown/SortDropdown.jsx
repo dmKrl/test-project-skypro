@@ -5,8 +5,21 @@ import * as s from './SortDropdown.style';
 
 function SortDropdown({ users, handleChangeUsers }) {
     const [showOptions, setShowOptions] = useState(false);
+    const [Ascending, setAscending] = useState(false);
+    const [Descending, setDescending] = useState(false);
 
-    const sortByRepositoriesAscending = () => {
+    const changeSortForAscending = (sortState) => {
+        if (sortState === 'asc') {
+            setAscending(true);
+            setDescending(false);
+        } else {
+            setAscending(false);
+            setDescending(true);
+        }
+    };
+
+    const sortByRepositoriesAscending = (sortState) => {
+        changeSortForAscending(sortState);
         setShowOptions(false);
         const sortedUsers = [...users].sort(
             (a, b) => a.public_rep.length - b.public_rep.length,
@@ -14,7 +27,8 @@ function SortDropdown({ users, handleChangeUsers }) {
         handleChangeUsers([...sortedUsers]);
     };
 
-    const sortByRepositoriesDescending = () => {
+    const sortByRepositoriesDescending = (sortState) => {
+        changeSortForAscending(sortState);
         setShowOptions(false);
         const sortedUsers = [...users].sort(
             (a, b) => b.public_rep.length - a.public_rep.length,
@@ -33,13 +47,19 @@ function SortDropdown({ users, handleChangeUsers }) {
                 </s.SortHeaderText>
             </s.SortHeader>
             {showOptions && (
-                <s.Options className="options">
-                    <div onClick={sortByRepositoriesAscending}>
+                <s.Options>
+                    <s.OptionsSortBlockAsc
+                        onClick={() => sortByRepositoriesAscending('asc')}
+                        $isActiveAsc={Ascending}
+                    >
                         По возрастанию репозиториев
-                    </div>
-                    <div onClick={sortByRepositoriesDescending}>
+                    </s.OptionsSortBlockAsc>
+                    <s.OptionsSortBlockDesc
+                        onClick={() => sortByRepositoriesDescending('desc')}
+                        $isActiveDesc={Descending}
+                    >
                         По убыванию репозиториев
-                    </div>
+                    </s.OptionsSortBlockDesc>
                 </s.Options>
             )}
         </s.SortDropdown>

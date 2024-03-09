@@ -1,7 +1,7 @@
 import * as s from './Pagination.style';
 
-function Pagination({ totalPages, currentPage, onPageChange }) {
-    const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+function Pagination({ totalPages, onPageChange }) {
+    const pages = Array.from({ length: totalPages }, (_, index) => index + 1); // Массив с номерами страниц
 
     return (
         <s.Pagination className="pagination">
@@ -10,7 +10,6 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
                     type="button"
                     key={page}
                     onClick={() => onPageChange(page)}
-                    className={currentPage === page ? 'active' : ''}
                 >
                     {page}
                 </s.PaginationButton>

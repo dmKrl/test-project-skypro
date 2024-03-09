@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Wrapper from './MainLayouts.style';
+import * as s from './MainLayouts.style';
 import SearchBar from '../SearchBar/SearchBar';
 import UserList from '../UserList/UserList';
 import Pagination from '../Pagination/Pagination';
@@ -11,23 +11,31 @@ function MainLayouts() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedUser, setSelectedUser] = useState(false);
     const [isShowingList, setIsShowingList] = useState(false);
+    const [isShowErrorLimit, setIsShowErrorLimit] = useState(false);
 
-    const PERSON_PAGE = 15;
-    const MAX_PAGES = 20;
+    const PERSON_PAGE = 15; // Число пользователей, которые могут одновременно выводиться на главном экране приложения
+    const MAX_PAGES = 20; // Максимальное количество страниц отображаемое в пагинации, даже учитывая что их может быть больше
+
     const handleChangeSelectedUser = (user) => {
         setSelectedUser(user);
     };
+
     const handleSearchQueryChange = (username) => {
         setSearchQuery(username);
     };
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
+
     const handleChangeUsers = (someUsers) => {
         setUsers(someUsers);
     };
-    const handleChangeIsShowingList = () => {
-        setIsShowingList(!isShowingList);
+
+    const handleChangeIsShowingList = (isShowing) => {
+        setIsShowingList(isShowing);
+    };
+
+    const handlePageChange = (page) => {
+        handleChangeUsers([]);
+        handleChangeIsShowingList(true);
+        setCurrentPage(page);
     };
 
     const fetchSearchUserRepos = async (usernameForGetRepos) => {
@@ -36,6 +44,10 @@ function MainLayouts() {
                 `https://api.github.com/users/${usernameForGetRepos}/repos`,
             );
             const responseData = await response.json();
+            if (responseData.message) {
+                return setIsShowErrorLimit(true);
+            }
+            setIsShowErrorLimit(false);
             return responseData;
         } catch (error) {
             return null;
@@ -60,7 +72,7 @@ function MainLayouts() {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchDataUser = async () => {
             const response = await fetch(
                 `https://api.github.com/search/users?q=${searchQuery}&per_page=${PERSON_PAGE}&page=${currentPage}`,
             );
@@ -74,13 +86,15 @@ function MainLayouts() {
             }
             setTotalPages(totalPageCount);
             fetchAddReposForUsers(responseData.items);
+            handleChangeIsShowingList(false);
         };
         if (searchQuery) {
-            fetchData();
+            fetchDataUser();
         }
     }, [currentPage, searchQuery]);
+
     return (
-        <Wrapper>
+        <s.Wrapper>
             <h1>Поиск пользователей на GitHub</h1>
             <SearchBar
                 users={users}
@@ -88,7 +102,17 @@ function MainLayouts() {
                 handleSearchQueryChange={handleSearchQueryChange}
                 handleChangeUsers={handleChangeUsers}
                 handleChangeSelectedUser={handleChangeSelectedUser}
+                handlePageChange={handlePageChange}
             />
+            {isShowErrorLimit && (
+                <s.MainLayoutsText>
+                    <strong>Предупреждение:</strong> Произошла ошибка запроса,
+                    на получение количества репозиториев, вы превысили
+                    количество бесплатных попыток. Функции сортировки и
+                    отображения количества репозиториев не работают. Повторите
+                    попытку через час.
+                </s.MainLayoutsText>
+            )}
             <UserList
                 users={users}
                 isShowingList={isShowingList}
@@ -98,11 +122,10 @@ function MainLayouts() {
             {totalPages !== 1 && (
                 <Pagination
                     totalPages={totalPages}
-                    currentPage={currentPage}
                     onPageChange={handlePageChange}
                 />
             )}
-        </Wrapper>
+        </s.Wrapper>
     );
 }
 

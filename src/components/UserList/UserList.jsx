@@ -11,6 +11,7 @@ function UserList({
     const showDetails = (user) => {
         handleChangeSelectedUser(user);
     };
+
     return (
         <s.UserListContainer>
             <s.UserListWrapper>
@@ -41,11 +42,11 @@ function UserList({
                             <p>Логин: {selectedUser.login}</p>
                             <p>
                                 Кол-во репозиториев:
-                                {selectedUser.public_rep.length}
+                                {selectedUser?.public_rep?.length}
                             </p>
                             <p>Айди: {selectedUser.id}</p>
                             <p>
-                                Ссылка на репозиторий:{' '}
+                                Ссылка на страницу GitHub пользователя:{' '}
                                 <a href={selectedUser.html_url}>
                                     {selectedUser.html_url}
                                 </a>
